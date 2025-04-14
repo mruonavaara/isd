@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISD Skill level assessment</title>
+</head>
+
+<body>
+  <h1>How confident do you feel about mastering the topics of this course?</h1>
+
+  <form id="form">
+    <datalist id="skill-level-values">
+      <option value="1" />
+      <option value="2" />
+      <option value="3" />
+      <option value="4" />
+      <option value="5" />
+    </datalist>
+
+    <fieldset style="display: flex; flex-direction: column; gap: 1em; align-items: center; padding: 1em;">
+      <legend>Scale 1-5 (1: not at all confident, 5: very confident)</legend>
+
+      <label>Variables:
+        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="variables">
+      </label>
+      <label>If statement:
+        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="ifstatement">
+      </label>
+      <label>Loops:
+        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="loops">
+      </label>
+      <label>Arrays:
+        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="arrays">
+      </label>
+      <label>Functions:
+        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="functions">
+      </label>
+      <label>Objects:
+        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="objects">
+      </label>
+
+      <div>
+        <button type="submit">Show graph</button>
+      </div>
+    </fieldset>
+  </form>
+
+  <div style="max-width: 600px; margin: 2em auto">
+    <canvas id="chart-canvas" />
+  </div>
+
+  <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js "></script>
+  <script>
+    const form = document.getElementById("form");
+
+    // Set submit handler for form
+    form.onsubmit = show;
+
+    // Retrieve drawing context on canvas
+    const context = document.getElementById("chart-canvas").getContext("2d");
+    let chart;
+
+    // Form submission handler, draws chart
+    function show(event) {
+      event.preventDefault(); // Prevent the default form submission behavior
+
+      // read values from from
+      const data = new FormData(form)
+      const values = [data.get("variables"), data.get("ifstatement"), data.get("loops"), data.get("arrays"), data.get("functions"), data.get("objects")].map(Number);
+
+      // clear chart before creating a new chart
+      if (chart) {
+        chart.destroy();
+      }
+
+      // create ChartJS chart with the data from form
+      chart = new Chart(context, {
+        type: 'radar',
+        data: {
+          labels: ['Variables', 'If statement', 'Loops', 'Arrays', 'Functions', 'Objects'],
+          datasets: [
+            {
+              data: values,
+              label: 'Confidence level'
+            }
+          ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              position: 'bottom'
+            }
+          },
+          scales: {
+            r: {
+              min: 0,
+              max: 5,
+              ticks: {
+                stepSize: 1,
+              },
+            }
+          },
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>
