@@ -12,34 +12,28 @@
 
   <form id="form">
     <datalist id="skill-level-values">
-      <option value="1" />
-      <option value="2" />
-      <option value="3" />
-      <option value="4" />
-      <option value="5" />
+      <option value="1" label="1" />
+      <option value="2" label="1" />
+      <option value="3" label="1" />
+      <option value="4" label="1" />
+      <option value="5" label="1" />
     </datalist>
 
     <fieldset style="display: flex; flex-direction: column; gap: 1em; align-items: center; padding: 1em;">
       <legend>Scale 1-5 (1: not at all confident, 5: very confident)</legend>
 
-      <label>Variables:
-        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="variables">
-      </label>
-      <label>If statement:
-        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="ifstatement">
-      </label>
-      <label>Loops:
-        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="loops">
-      </label>
-      <label>Arrays:
-        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="arrays">
-      </label>
-      <label>Functions:
-        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="functions">
-      </label>
-      <label>Objects:
-        <input type="number" min="1" max="5" step="1" list="skill-level-values" name="objects">
-      </label>
+      <label>Variables:</label>
+      <input type="range" min="1" max="5" step="1" list="skill-level-values" required name="variables">
+      <label>If statement:</label>
+      <input type="range" min="1" max="5" step="1" list="skill-level-values" required name="ifstatement">
+      <label>Loops:</label>
+      <input type="range" min="1" max="5" step="1" list="skill-level-values" required name="loops">
+      <label>Arrays:</label>
+      <input type="range" min="1" max="5" step="1" list="skill-level-values" required name="arrays">
+      <label>Functions:</label>
+      <input type="range" min="1" max="5" step="1" list="skill-level-values" required name="functions">
+      <label>Objects:</label>
+      <input type="range" min="1" max="5" step="1" list="skill-level-values" required name="objects">
 
       <div>
         <button type="submit">Show graph</button>
@@ -47,13 +41,14 @@
     </fieldset>
   </form>
 
-  <div style="max-width: 600px; margin: 2em auto">
+  <div style="max-width: 600px; margin: 2em auto" onClick="onClickChart()">
     <canvas id="chart-canvas" />
   </div>
 
   <script src=" https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js "></script>
   <script>
     const form = document.getElementById("form");
+    const chartContainer = document.getElementById("chart-container");
 
     // Set submit handler for form
     form.onsubmit = show;
@@ -104,7 +99,21 @@
           },
         }
       })
+    
+      onShowChart();
     }
+
+    function onShowChart() {
+      // hide inputs
+      form.style.display="none";
+    }
+
+    function onClickChart() {
+      // show inputs and destroy chart contents
+      form.style.display="block";
+      chart.destroy();
+    }
+
   </script>
 </body>
 
